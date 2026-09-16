@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Admin Order Detail{% endblock %}
+{% block content %}
+<section class="container page-head">
+  <h1>Order Details</h1>
+  <div class="panel">
+    <p><strong>Order ID:</strong> {{ order.order_id }}</p>
+    <h2>CUSTOMER</h2>
+    <p><strong>Customer ID:</strong> CUST-{{ '%04d'|format(order.customer_id) }}</p>
+    <p><strong>Name:</strong> {{ order.customer_name }}</p>
+    <p><strong>Email:</strong> {{ order.customer_email }}</p>
+    <p><strong>Phone:</strong> {{ order.customer_phone }}</p>
+    <h2>ORDER</h2>
+    <p><strong>Pickup Time:</strong> {{ order.pickup_time }}</p>
+    <p><strong>Created:</strong> {{ order.created_at }}</p>
+    <p><strong>Updated:</strong> {{ order.updated_at }}</p>
+    <p><strong>Order Status:</strong> {{ order.status }}</p>
+    <p><strong>Total Amount:</strong> ₹{{ order.total_amount }}</p>
+
+    <h3>Items</h3>
+    <ul>
+      {% for item in items %}
+      <li>{{ item.product_name }} | Quantity: {{ item.quantity }} | Price: ₹{{ item.price }} | Subtotal: ₹{{ item.price * item.quantity }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>PAYMENT</h2>
+    <p><strong>Payment Method:</strong> {{ order.payment_method }}</p>
+    <p><strong>Payment Status:</strong> {{ order.payment_status }}</p>
+    <p><strong>UPI Transaction / Reference ID:</strong> {{ order.transaction_id or 'N/A' }}</p>
+    <p><strong>Payment Date / Time:</strong> {{ order.payment_created_at or 'N/A' }}</p>
+    <form method="post" action="/admin/payment/{{ order.id }}/status">
+      <label for="payment_status">Update payment status</label>
+      <select name="payment_status" id="payment_status">
+        <option value="PAID">PAID</option>
+        <option value="REJECTED">REJECTED</option>
+        <option value="FAILED">FAILED</option>
+        <option value="REFUNDED">REFUNDED</option>
+        <option value="PENDING VERIFICATION">PENDING VERIFICATION</option>
+        <option value="CASH / PENDING">CASH / PENDING</option>
+      </select>
+      <button type="submit" class="btn btn-primary">Update Payment</button>
+    </form>
+
+    <h2>ORDER STATUS</h2>
+    <form method="post" action="/admin/order/{{ order.id }}/status">
+      <label for="status">Update status</label>
+      <select name="status" id="status">
+        <option value="PENDING" {% if order.status == 'PENDING' %}selected{% endif %}>PENDING</option>
+        <option value="PLACED" {% if order.status == 'PLACED' %}selected{% endif %}>PLACED</option>
+        <option value="CONFIRMED" {% if order.status == 'CONFIRMED' %}selected{% endif %}>CONFIRMED</option>
+        <option value="PREPARING" {% if order.status == 'PREPARING' %}selected{% endif %}>PREPARING</option>
+        <option value="READY" {% if order.status == 'READY' %}selected{% endif %}>READY</option>
+        <option value="COMPLETED" {% if order.status == 'COMPLETED' %}selected{% endif %}>COMPLETED</option>
+      </select>
+      <button type="submit" class="btn btn-primary">Update Status</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

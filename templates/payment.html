@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Payment | Smart Canteen{% endblock %}
+{% block content %}
+<section class="container page-head">
+  <div class="panel">
+    <h1>UPI Payment</h1>
+    <p><strong>Order ID:</strong> {{ order.order_id }}</p>
+    <p><strong>Total due:</strong> ₹{{ total }}</p>
+
+    {% if gateway_ready and gateway_order %}
+      <form id="razorpay-payment-form" method="post" action="{{ url_for('verify_student_payment') }}">
+        <input type="hidden" name="order_id" value="{{ order.id }}" />
+        <input type="hidden" name="razorpay_order_id" id="razorpay_order_id" value="{{ gateway_order.id }}" />
+        <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id" />
+        <input type="hidden" name="razorpay_signature" id="razorpay_signature" />
+        <button type="button" id="pay-now" class="btn btn-primary">Pay Now</button>
+      </form>
+      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+      <script>
+        document.getElementById('pay-now').addEventListener('click', function () {
+          const checkout = new Razorpay({
+            key: {{ razorpay_key_id|tojson }},
+            amount: {{ (total * 100)|int }},
+            currency: 'INR',
+            name: 'Smart Pre-Order Canteen',
+            description: 'Order {{ order.order_id }}',
+            order_id: {{ gateway_order.id|tojson }},
+            handler: function (response) {
+              document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+              document.getElementById('razorpay_signature').value = response.razorpay_signature;
+              document.getElementById('razorpay-payment-form').submit();
+            }
+          });
+          checkout.open();
+        });
+      </script>
+      <p class="muted-text">After successful payment, Razorpay verifies the payment signature and confirms the order automatically.</p>
+    {% else %}
+      <p class="muted-text">Online gateway is not configured. Automatic payment confirmation is unavailable until Razorpay credentials are added.</p>
+    {% endif %}
+
+    <h2>PAY ONLINE USING UPI</h2>
+    <p><strong>UPI ID:</strong> <span id="upi-id">{{ upi_id }}</span></p>
+    <button type="button" class="btn btn-secondary" onclick="navigator.clipboard.writeText('{{ upi_id }}')">Copy UPI ID</button>
+    <div class="upi-box">
+      {% if qr_available %}
+        <img src="{{ url_for('static', filename=qr_filename) }}" alt="PhonePe UPI QR code" class="upi-qr" />
+        <p>Scan QR and Pay</p>
+      {% else %}
+        <p>PhonePe QR image is not available yet. Use the UPI ID above.</p>
+      {% endif %}
+    </div>
+    <p class="muted-text">The static QR is for displaying the authorized UPI account. It cannot notify this Flask app that money was received. Use Pay Now above for automatic gateway verification.</p>
+    <a href="/student/orders" class="btn btn-secondary">View Orders</a>
+  </div>
+</section>
+{% endblock %}

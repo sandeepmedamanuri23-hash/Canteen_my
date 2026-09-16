@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Company Profile | Reverse Internship{% endblock %}
+{% block content %}
+<section class="container dashboard">
+  <div class="dashboard-header">
+    <div>
+      <p class="eyebrow">Company profile</p>
+      <h1>{{ company.company_name if company else 'Company Profile' }}</h1>
+    </div>
+    <a href="/company/dashboard" class="btn secondary">BACK TO DASHBOARD</a>
+  </div>
+
+  <div class="card-grid two">
+    <article class="panel-card">
+      <h3>Company overview</h3>
+      <p><strong>Industry:</strong> {{ company.industry or 'Not specified' }}</p>
+      <p><strong>Location:</strong> {{ company.location or 'Remote first' }}</p>
+      <p><strong>Website:</strong> {{ company.website or 'Not available' }}</p>
+      <p><strong>Company size:</strong> {{ company.company_size or 'Not specified' }}</p>
+      <p><strong>Technologies:</strong> {{ company.technologies or 'No technologies listed' }}</p>
+      <p><strong>Description:</strong> {{ company.description or 'No company description provided yet.' }}</p>
+    </article>
+
+    <article class="panel-card">
+      <h3>Hiring needs</h3>
+      <div class="mini-problem"><div><strong>Open problem slots</strong><small>Currently seeking interns</small></div><span>3</span></div>
+      <div class="mini-problem"><div><strong>Engagement</strong><small>Average response time</small></div><span>2 days</span></div>
+      <div class="mini-problem"><div><strong>Partner network</strong><small>Active mentors</small></div><span>6</span></div>
+    </article>
+  </div>
+
+  <article class="panel-card" style="margin-top: 1.5rem;">
+    <h3>Edit company details</h3>
+    <form method="post" action="/company/profile/edit">
+      <div class="form-grid two">
+        <div><label>Company name</label><input type="text" name="company_name" value="{{ company.company_name if company else '' }}" /></div>
+        <div><label>Industry</label><input type="text" name="industry" value="{{ company.industry or '' }}" /></div>
+        <div><label>Website</label><input type="text" name="website" value="{{ company.website or '' }}" /></div>
+        <div><label>Company size</label><input type="text" name="company_size" value="{{ company.company_size or '' }}" /></div>
+        <div><label>Location</label><input type="text" name="location" value="{{ company.location or '' }}" /></div>
+        <div><label>Technologies</label><input type="text" name="technologies" value="{{ company.technologies or '' }}" /></div>
+        <div class="full-width"><label>Description</label><textarea name="description">{{ company.description or '' }}</textarea></div>
+      </div>
+      <button type="submit" class="btn primary">SAVE COMPANY PROFILE</button>
+    </form>
+  </article>
+</section>
+{% endblock %}

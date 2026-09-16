@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}SMART PRE-ORDER CANTEEN{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <header class="topbar">
+      <nav class="nav container">
+        <div class="brand">SMART PRE-ORDER</div>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          {% if session.get('user_id') %}
+            {% if session.get('role') == 'admin' %}
+              <a href="/admin/dashboard">Dashboard</a>
+              <a href="/admin/orders">Orders</a>
+              <a href="/admin/payments">Payments</a>
+              <a href="/admin/food">Food</a>
+              <a href="/logout">Logout</a>
+            {% else %}
+              <a href="/student/dashboard">Dashboard</a>
+              <a href="/student/menu">Menu</a>
+              <a href="/student/cart">Cart</a>
+              <a href="/student/orders">Orders</a>
+              <a href="/logout">Logout</a>
+            {% endif %}
+          {% else %}
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            <a href="/admin/login">Admin</a>
+          {% endif %}
+        </div>
+      </nav>
+    </header>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="container">
+          {% for message in messages %}
+            <div class="flash">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <main>{% block content %}{% endblock %}</main>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}{{ problem.title }} | Reverse Internship{% endblock %}
+{% block content %}
+<section class="container page-section problem-detail">
+  <div class="detail-header">
+    <div>
+      <p class="eyebrow">{{ problem.category }}</p>
+      <h1>{{ problem.title }}</h1>
+      <p>By {{ company.company_name if company else 'Company' }}</p>
+    </div>
+    <div class="detail-buttons">
+      <button class="btn primary">APPLY FOR THIS PROBLEM</button>
+      <button class="btn secondary">ASK COMPANY A QUESTION</button>
+    </div>
+  </div>
+
+  <div class="detail-grid">
+    <article class="panel-card">
+      <h3>Problem description</h3>
+      <p>{{ problem.description }}</p>
+      <h4>Requirements</h4>
+      <p>{{ problem.requirements }}</p>
+      <h4>Expected deliverables</h4>
+      <p>{{ problem.deliverables }}</p>
+    </article>
+    <aside class="panel-card sidebar-card">
+      <h3>Problem info</h3>
+      <ul class="meta-list">
+        <li><strong>Technologies:</strong> {{ problem.technologies }}</li>
+        <li><strong>Required skills:</strong> {{ problem.required_skills }}</li>
+        <li><strong>Difficulty:</strong> {{ problem.difficulty }}</li>
+        <li><strong>Duration:</strong> {{ problem.duration }}</li>
+        <li><strong>Deadline:</strong> {{ problem.deadline }}</li>
+        <li><strong>Payment:</strong> {{ problem.payment_status }}{% if problem.payment_status == 'Paid' %} - ${{ problem.payment_amount }}{% endif %}</li>
+        <li><strong>Remote/On-site:</strong> {{ problem.remote_option }}</li>
+      </ul>
+    </aside>
+  </div>
+
+  <div class="panel-card app-form">
+    <h3>Apply for this problem</h3>
+    <form method="post" action="/apply/{{ problem.id }}">
+      <div class="form-grid two">
+        <div class="full-width"><label>Introduction</label><textarea name="introduction"></textarea></div>
+        <div class="full-width"><label>Why are you suitable?</label><textarea name="suitability"></textarea></div>
+        <div class="full-width"><label>Relevant skills</label><input type="text" name="relevant_skills" /></div>
+        <div class="full-width"><label>Previous projects</label><input type="text" name="previous_projects" /></div>
+        <div><label>GitHub link</label><input type="text" name="github_link" /></div>
+        <div><label>Portfolio link</label><input type="text" name="portfolio_link" /></div>
+        <div class="full-width"><label>Estimated completion time</label><input type="text" name="estimated_completion_time" /></div>
+      </div>
+      <button class="btn primary" type="submit">Submit Application</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

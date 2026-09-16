@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% block title %}Reverse Internship | Companies Have Problems. Students Have Solutions.{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <p class="eyebrow">REVERSE INTERNSHIP</p>
+      <h1>Companies Have Problems. Students Have Solutions.</h1>
+      <p class="subtitle">Connect with companies, solve real-world problems, work on unfinished projects, gain practical experience, and build your career.</p>
+      <div class="hero-actions">
+        <a href="/problems" class="btn primary">Find Problems</a>
+        <a href="/register" class="btn secondary">Post a Problem</a>
+      </div>
+    </div>
+    <div class="workflow-card">
+      <div class="workflow-label">COMPANY</div>
+      <div class="workflow-arrow">↓</div>
+      <div class="workflow-item">POST REAL PROBLEM</div>
+      <div class="workflow-arrow">↓</div>
+      <div class="workflow-item">STUDENT DISCOVERS PROBLEM</div>
+      <div class="workflow-arrow">↓</div>
+      <div class="workflow-item">STUDENT APPLIES</div>
+      <div class="workflow-arrow">↓</div>
+      <div class="workflow-item">COMPANY ASSIGNS TASK</div>
+      <div class="workflow-arrow">↓</div>
+      <div class="workflow-item">STUDENT + COMPANY COMMUNICATE</div>
+      <div class="workflow-arrow">↓</div>
+      <div class="workflow-item">STUDENT SOLVES PROBLEM</div>
+      <div class="workflow-arrow">↓</div>
+      <div class="workflow-item">SUBMISSION</div>
+      <div class="workflow-arrow">↓</div>
+      <div class="workflow-item">COMPANY REVIEWS</div>
+      <div class="workflow-arrow">↓</div>
+      <div class="workflow-item">STUDENT GAINS EXPERIENCE</div>
+    </div>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="section-head">
+    <p class="eyebrow">How it works</p>
+    <h2>From real problem to real experience</h2>
+  </div>
+  <div class="card-grid three">
+    <article class="info-card">
+      <div class="icon">01</div>
+      <h3>Post a challenge</h3>
+      <p>Companies share bugs, unfinished projects, feature gaps, research tasks, or AI/ML problems.</p>
+    </article>
+    <article class="info-card">
+      <div class="icon">02</div>
+      <h3>Apply and match</h3>
+      <p>Students discover relevant problems and submit compelling applications with their skills and portfolio.</p>
+    </article>
+    <article class="info-card">
+      <div class="icon">03</div>
+      <h3>Build and review</h3>
+      <p>Accepted students solve tasks, communicate with companies, and get reviewed on real deliverables.</p>
+    </article>
+  </div>
+</section>
+
+<section class="section alt-bg">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">For students</p>
+      <h2>Turn your skills into real-world proof</h2>
+    </div>
+    <div class="card-grid three">
+      <article class="feature-card">
+        <h3>Find relevant problems</h3>
+        <p>Search by technology, stack, category, payment, or difficulty.</p>
+      </article>
+      <article class="feature-card">
+        <h3>Build your portfolio</h3>
+        <p>Every completed task becomes experience students can showcase publicly.</p>
+      </article>
+      <article class="feature-card">
+        <h3>Get feedback</h3>
+        <p>Companies review submissions and help students improve for future opportunities.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="section-head">
+    <p class="eyebrow">For companies</p>
+    <h2>Get solutions for the work that matters</h2>
+  </div>
+  <div class="card-grid three">
+    <article class="feature-card">
+      <h3>Post real problems</h3>
+      <p>From bug fixes to AI use cases, research tasks, testing, or documentation.</p>
+    </article>
+    <article class="feature-card">
+      <h3>Review applicants</h3>
+      <p>Compare students, inspect projects, and assign the right person quickly.</p>
+    </article>
+    <article class="feature-card">
+      <h3>Ship faster</h3>
+      <p>Move work forward with direct communication, milestone reviews, and real submissions.</p>
+    </article>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="section-head">
+    <p class="eyebrow">Featured problems</p>
+    <h2>Real challenges from real companies</h2>
+  </div>
+  <div class="card-grid three">
+    {% for problem in problems %}
+    <article class="problem-card">
+      <div class="problem-topline"><span>{{ problem.category }}</span><span class="badge paid">{{ problem.payment_status }}</span></div>
+      <h3>{{ problem.title }}</h3>
+      <p>{{ problem.description[:120] }}...</p>
+      <div class="meta-row">
+        <span>{{ problem.technologies }}</span>
+        <span>{{ problem.difficulty }}</span>
+      </div>
+      <div class="meta-row">
+        <span>{{ problem.duration }}</span>
+        <span>Deadline: {{ problem.deadline }}</span>
+      </div>
+      <a href="/problems/{{ problem.id }}" class="btn primary small">View Problem</a>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section alt-bg">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Popular technologies</p>
+      <h2>Learn what companies are building</h2>
+    </div>
+    <div class="tag-list">
+      <span>Python</span>
+      <span>FastAPI</span>
+      <span>React</span>
+      <span>Next.js</span>
+      <span>Node.js</span>
+      <span>AI/ML</span>
+      <span>Data Science</span>
+      <span>Cloud</span>
+      <span>Cybersecurity</span>
+      <span>Flutter</span>
+    </div>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="section-head">
+    <p class="eyebrow">Recently posted</p>
+    <h2>Fresh opportunities for students</h2>
+  </div>
+  <div class="list-stack">
+    {% for problem in problems %}
+    <div class="mini-problem">
+      <div>
+        <strong>{{ problem.title }}</strong>
+        <small>{{ problem.category }} • {{ problem.technologies }}</small>
+      </div>
+      <span>{{ problem.difficulty }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section alt-bg">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Success stories</p>
+      <h2>Students have already built real momentum</h2>
+    </div>
+    <div class="card-grid three">
+      <article class="quote-card">
+        <p>“I fixed a live authentication bug and built a real portfolio case study.”</p>
+        <strong>Riya, Computer Science Student</strong>
+      </article>
+      <article class="quote-card">
+        <p>“This helped me move from theoretical projects to production-ready work.”</p>
+        <strong>Arjun, Data Science Student</strong>
+      </article>
+      <article class="quote-card">
+        <p>“The feedback loop with the company was incredibly practical and career-building.”</p>
+        <strong>Sneha, Web Developer</strong>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="stats-grid">
+    <div class="stat-box"><strong>1200+</strong><span>Students</span></div>
+    <div class="stat-box"><strong>340</strong><span>Companies</span></div>
+    <div class="stat-box"><strong>780</strong><span>Problems solved</span></div>
+    <div class="stat-box"><strong>96%</strong><span>Positive feedback</span></div>
+  </div>
+</section>
+
+<section class="section alt-bg">
+  <div class="container faq-wrap">
+    <div class="section-head">
+      <p class="eyebrow">FAQ</p>
+      <h2>Common questions</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item"><h4>Who can join?</h4><p>Students, companies, and administrators can all participate.</p></div>
+      <div class="faq-item"><h4>What kind of problems are posted?</h4><p>Bug fixes, unfinished projects, feature work, testing, AI tasks, research, and more.</p></div>
+      <div class="faq-item"><h4>Is it paid?</h4><p>Problems can be unpaid or paid depending on the company.</p></div>
+      <div class="faq-item"><h4>Can students build a portfolio?</h4><p>Yes. Completed tasks can be displayed as public portfolio work.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container cta-box">
+    <h2>Build real experience. Solve real problems.</h2>
+    <p>Join Reverse Internship and turn your skills into portfolio-worthy outcomes.</p>
+    <div class="hero-actions">
+      <a href="/register" class="btn primary">Get Started</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

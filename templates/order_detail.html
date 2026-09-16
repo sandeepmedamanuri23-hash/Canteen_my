@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Order Detail | Smart Canteen{% endblock %}
+{% block content %}
+<section class="container page-head">
+  <h1>Order Details</h1>
+  <div class="panel">
+    <p><strong>Order ID:</strong> {{ order.order_id }}</p>
+    <p><strong>Pickup Token:</strong> {{ order.pickup_token }}</p>
+    <p><strong>Status:</strong> {{ order.status }}</p>
+    <p><strong>Pickup Time:</strong> {{ order.pickup_time }}</p>
+    <p><strong>Payment Method:</strong> {{ order.payment_method }}</p>
+    <p><strong>Payment Status:</strong> {{ order.payment_status }}</p>
+    {% if order.payment_method == 'UPI' %}
+    <p><strong>UPI Transaction / Reference ID:</strong> {{ order.upi_transaction_id or 'Not submitted' }}</p>
+    {% endif %}
+    <ul>
+      {% for item in items %}
+      <li>{{ item.food_name }} x {{ item.quantity }} = ₹{{ item.price * item.quantity }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endblock %}

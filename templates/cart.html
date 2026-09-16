@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Cart | Smart Canteen{% endblock %}
+{% block content %}
+<section class="container page-head">
+  <h1>Your Cart</h1>
+  {% if items %}
+  <div class="table-wrap">
+    <table class="cart-table">
+      <thead>
+        <tr><th>Food</th><th>Price</th><th>Qty</th><th>Subtotal</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td>{{ item.name }}</td>
+          <td>₹{{ item.price }}</td>
+          <td>
+            <form method="post" action="/student/cart/update">
+              <input type="hidden" name="food_id" value="{{ item.id }}" />
+              <input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="width:80px;" />
+              <button type="submit" class="btn btn-secondary">Update</button>
+            </form>
+          </td>
+          <td>₹{{ item.subtotal }}</td>
+          <td><a href="/student/cart/remove/{{ item.id }}" class="btn btn-secondary">Remove</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p><strong>Total: ₹{{ total }}</strong></p>
+  <a href="/student/checkout" class="btn btn-primary">Proceed to Checkout</a>
+  {% else %}
+  <p>Your cart is empty.</p>
+  {% endif %}
+</section>
+{% endblock %}

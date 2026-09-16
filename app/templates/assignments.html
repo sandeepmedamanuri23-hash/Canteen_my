@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Assignments | Reverse Internship{% endblock %}
+{% block content %}
+<section class="container page-section">
+  <div class="section-head">
+    <p class="eyebrow">Assignments</p>
+    <h1>Active workstreams</h1>
+  </div>
+
+  <div class="card-grid two">
+    {% for assignment in assignments %}
+    <article class="panel-card">
+      <div class="problem-topline"><span>Assignment #{{ assignment.id }}</span><span class="badge paid">{{ assignment.status }}</span></div>
+      <h3>Problem {{ assignment.problem_id }}</h3>
+      <p>Student and company collaboration is active for this challenge.</p>
+      <form method="post" action="/submit/{{ assignment.id }}">
+        <div class="form-grid two">
+          <div><label>GitHub repository</label><input type="text" name="github_repository" /></div>
+          <div><label>Live demo</label><input type="text" name="live_demo" /></div>
+          <div class="full-width"><label>Project summary</label><textarea name="description"></textarea></div>
+          <div class="full-width"><label>Testing notes</label><textarea name="testing_info"></textarea></div>
+          <div class="full-width"><label>Comments</label><textarea name="comments"></textarea></div>
+        </div>
+        <button class="btn primary" type="submit">SUBMIT WORK</button>
+      </form>
+    </article>
+    {% else %}
+    <article class="panel-card">
+      <h3>No assignments yet</h3>
+      <p>Start applying to problems or create a new challenge to see work here.</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Companies | Reverse Internship{% endblock %}
+{% block content %}
+<section class="container page-section">
+  <div class="section-head">
+    <p class="eyebrow">Company directory</p>
+    <h1>Explore partner teams</h1>
+  </div>
+
+  <div class="card-grid three">
+    {% for company in companies %}
+    <article class="problem-card">
+      <div class="problem-topline"><span>{{ company.industry or 'Technology' }}</span><span class="badge paid">{{ company.company_size or 'Startup' }}</span></div>
+      <h3>{{ company.company_name }}</h3>
+      <p>{{ company.description or 'Building products and internship opportunities for students.' }}</p>
+      <div class="meta-row">
+        <span>{{ company.location or 'Remote' }}</span>
+        <span>{{ company.website or 'Website unavailable' }}</span>
+      </div>
+      <div class="tag-list">
+        {% for tech in (company.technologies or '').split(',')[:4] %}
+          <span>{{ tech.strip() }}</span>
+        {% endfor %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

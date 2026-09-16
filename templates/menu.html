@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Menu | Smart Canteen{% endblock %}
+{% block content %}
+<section class="container page-head">
+  <h1>Food Menu</h1>
+  <div class="toolbar">
+    <form method="get" action="/student/menu" class="toolbar">
+      <select name="canteen_id">
+        {% for canteen in canteens %}
+        <option value="{{ canteen.id }}" {% if canteen.id == selected_canteen_id %}selected{% endif %}>{{ canteen.name }}</option>
+        {% endfor %}
+      </select>
+      <select name="category">
+        {% for category_name in categories %}
+        <option value="{{ category_name }}" {% if category_name == category %}selected{% endif %}>{{ category_name }}</option>
+        {% endfor %}
+      </select>
+      <input type="text" name="search" value="{{ search }}" placeholder="Search food" />
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <a href="/student/cart" class="btn btn-secondary">View Cart</a>
+  </div>
+
+  <div class="food-grid">
+    {% for food in foods %}
+    <article class="food-card">
+      <h3>{{ food.name }}</h3>
+      <p>{{ food.description }}</p>
+      <div class="food-meta"><span>{{ food.category }}</span><span>₹{{ food.price }}</span></div>
+      <div class="food-meta"><span>Stock: {{ food.stock }}</span><span>{{ 'Available' if food.available else 'Unavailable' }}</span></div>
+      <form method="post" action="/student/cart/add">
+        <div class="product-actions">
+          <input type="hidden" name="food_id" value="{{ food.id }}" />
+          <input class="qty-input" type="number" name="quantity" value="1" min="1" max="{{ food.stock }}" />
+          <button type="submit" class="btn btn-primary">Add to Cart</button>
+        </div>
+      </form>
+    </article>
+    {% else %}
+    <p>No foods found.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

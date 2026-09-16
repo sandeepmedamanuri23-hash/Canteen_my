@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Notifications | Reverse Internship{% endblock %}
+{% block content %}
+<section class="container page-section">
+  <div class="section-head">
+    <p class="eyebrow">Notifications</p>
+    <h1>Latest updates</h1>
+  </div>
+
+  <div class="card-grid one">
+    {% for notification in notifications %}
+    <article class="panel-card">
+      <div class="mini-problem"><div><strong>{{ notification.message }}</strong><small>{{ notification.created_at.strftime('%Y-%m-%d %H:%M') if notification.created_at else 'Now' }}</small></div><span>{{ 'Read' if notification.is_read else 'New' }}</span></div>
+    </article>
+    {% else %}
+    <article class="panel-card">
+      <h3>No notifications</h3>
+      <p>You are all caught up.</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

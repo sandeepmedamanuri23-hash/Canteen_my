@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Login | Smart Canteen{% endblock %}
+{% block content %}
+<section class="auth-section">
+  <div class="auth-card">
+    <h2>Login</h2>
+
+    <div class="auth-method-toggle">
+      <a href="/login" class="auth-tab {% if not mobile_mode %}active{% endif %}">Email & Password</a>
+      <a href="/login/mobile" class="auth-tab {% if mobile_mode %}active{% endif %}">Login with Mobile Number</a>
+    </div>
+
+    {% if mobile_mode %}
+      <form method="post" action="{{ url_for('login_mobile') }}">
+        <div>
+          <label>Mobile Number</label>
+          <input type="tel" name="phone" placeholder="9876543210" inputmode="numeric" pattern="[6-9][0-9]{9}" required />
+          <small class="muted-text">Enter a valid 10-digit Indian mobile number.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Send OTP</button>
+      </form>
+      <p class="auth-link"><a href="/register">Create a new account</a></p>
+    {% else %}
+      <form method="post" action="{{ url_for('login') }}">
+        <div>
+          <label>Email</label>
+          <input type="email" name="email" required />
+        </div>
+        <div>
+          <label>Password</label>
+          <input type="password" name="password" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+      <p class="auth-link">New user? <a href="/register">Register here</a></p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

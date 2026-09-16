@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Register | Reverse Internship{% endblock %}
+{% block content %}
+<section class="auth-section">
+  <div class="auth-card wide">
+    <h2>Create your account</h2>
+    <p>Join as a student to solve challenges or as a company to post real-world problems.</p>
+    <form method="post" action="/register">
+      <div class="form-grid two">
+        <div>
+          <label>Role</label>
+          <select name="role">
+            <option value="student">Student</option>
+            <option value="company">Company</option>
+          </select>
+        </div>
+        <div>
+          <label>Email</label>
+          <input type="email" name="email" required />
+        </div>
+        <div>
+          <label>Password</label>
+          <input type="password" name="password" required />
+        </div>
+        <div>
+          <label>Name / Company Name</label>
+          <input type="text" name="name" />
+        </div>
+        <div>
+          <label>College</label>
+          <input type="text" name="college" />
+        </div>
+        <div>
+          <label>Degree</label>
+          <input type="text" name="degree" />
+        </div>
+        <div>
+          <label>Branch</label>
+          <input type="text" name="branch" />
+        </div>
+        <div>
+          <label>Skills</label>
+          <input type="text" name="skills" />
+        </div>
+        <div>
+          <label>Industry</label>
+          <input type="text" name="industry" />
+        </div>
+        <div>
+          <label>Website</label>
+          <input type="url" name="website" />
+        </div>
+        <div class="full-width">
+          <label>Description</label>
+          <textarea name="description"></textarea>
+        </div>
+      </div>
+      <button type="submit" class="btn primary full">Register</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

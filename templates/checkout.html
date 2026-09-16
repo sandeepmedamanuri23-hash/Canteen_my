@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Checkout | Smart Canteen{% endblock %}
+{% block content %}
+<section class="container page-head">
+  <h1>Checkout</h1>
+  <div class="panel">
+    <form method="post" action="/student/checkout">
+      <div>
+        <label>Pickup Time</label>
+        <input type="time" name="pickup_time" required />
+      </div>
+      <div>
+        <label>Payment Method</label>
+        <label><input type="radio" name="payment_method" value="CASH" required /> Cash</label>
+        <label><input type="radio" name="payment_method" value="UPI" required /> UPI / Online Payment</label>
+      </div>
+      <div>
+        <h3>Order Summary</h3>
+        {% for item in items %}
+        <p>{{ item.name }} x {{ item.quantity }} = ₹{{ item.subtotal }}</p>
+        {% endfor %}
+        <p><strong>Total: ₹{{ total }}</strong></p>
+      </div>
+      <button type="submit" class="btn btn-primary">Place Order</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

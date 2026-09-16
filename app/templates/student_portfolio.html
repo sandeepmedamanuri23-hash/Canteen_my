@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}{{ student.name }} Portfolio | Reverse Internship{% endblock %}
+{% block content %}
+<section class="container dashboard">
+  <div class="dashboard-header">
+    <div>
+      <p class="eyebrow">Student portfolio</p>
+      <h1>{{ student.name }}</h1>
+    </div>
+    <a href="/students" class="btn secondary">BACK TO STUDENTS</a>
+  </div>
+
+  <div class="card-grid two">
+    <article class="panel-card">
+      <h3>About</h3>
+      <p>{{ student.bio or 'This student is ready to take on internships and product work.' }}</p>
+      <p><strong>College:</strong> {{ student.college or 'Not listed' }}</p>
+      <p><strong>Degree:</strong> {{ student.degree or 'Not listed' }}</p>
+      <p><strong>Branch:</strong> {{ student.branch or 'Not listed' }}</p>
+    </article>
+
+    <article class="panel-card">
+      <h3>Skills & links</h3>
+      <div class="tag-list">
+        {% for skill in (student.skills or '').split(',') %}
+        <span>{{ skill.strip() }}</span>
+        {% endfor %}
+      </div>
+      <p><strong>GitHub:</strong> {{ student.github or 'Not provided' }}</p>
+      <p><strong>LinkedIn:</strong> {{ student.linkedin or 'Not provided' }}</p>
+      <p><strong>Portfolio:</strong> {{ student.portfolio or 'Not provided' }}</p>
+    </article>
+  </div>
+</section>
+{% endblock %}

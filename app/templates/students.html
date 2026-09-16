@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Students | Reverse Internship{% endblock %}
+{% block content %}
+<section class="container page-section">
+  <div class="section-head">
+    <p class="eyebrow">Student network</p>
+    <h1>Meet students solving real problems</h1>
+  </div>
+
+  <div class="card-grid three">
+    {% for student in students %}
+    <article class="problem-card">
+      <div class="problem-topline"><span>{{ student.college or 'Independent Student' }}</span><span class="badge paid">{{ student.experience_level or 'Beginner' }}</span></div>
+      <h3>{{ student.name }}</h3>
+      <p>{{ student.bio or 'Student profile is ready for internships and project work.' }}</p>
+      <div class="meta-row">
+        <span>{{ student.degree or 'Student' }}</span>
+        <span>{{ student.branch or 'General' }}</span>
+      </div>
+      <div class="tag-list">
+        {% for skill in (student.skills or '').split(',')[:4] %}
+          <span>{{ skill.strip() }}</span>
+        {% endfor %}
+      </div>
+      <div class="problem-actions">
+        <a href="/student/portfolio/{{ student.id }}" class="btn secondary small">View Portfolio</a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

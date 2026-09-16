@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard{% endblock %}
+{% block content %}
+<section class="container page-head">
+  <h1>Student Dashboard</h1>
+  <div class="dashboard-grid">
+    <div class="stat-card"><h3>Orders</h3><strong>{{ orders|length }}</strong></div>
+    <div class="stat-card"><h3>Active</h3><strong>{{ orders|selectattr('status','ne','COMPLETED')|list|length }}</strong></div>
+    <div class="stat-card"><h3>Cart</h3><strong>{{ session.get('cart', {})|length }}</strong></div>
+    <div class="stat-card"><h3>Status</h3><strong>Ready</strong></div>
+  </div>
+  <a href="/student/menu" class="btn btn-primary">Browse Menu</a>
+</section>
+{% endblock %}

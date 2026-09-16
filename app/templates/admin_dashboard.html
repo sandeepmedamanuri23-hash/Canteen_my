@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard | Reverse Internship{% endblock %}
+{% block content %}
+<section class="container dashboard">
+  <div class="dashboard-header">
+    <div>
+      <p class="eyebrow">Admin dashboard</p>
+      <h1>Platform overview</h1>
+    </div>
+    <a href="/problems" class="btn primary">VIEW MARKETPLACE</a>
+  </div>
+
+  <div class="stats-grid dashboard-stats">
+    <div class="stat-box"><strong>{{ stats.students }}</strong><span>Students</span></div>
+    <div class="stat-box"><strong>{{ stats.companies }}</strong><span>Companies</span></div>
+    <div class="stat-box"><strong>{{ stats.problems }}</strong><span>Problems</span></div>
+    <div class="stat-box"><strong>{{ stats.applications }}</strong><span>Applications</span></div>
+    <div class="stat-box"><strong>{{ stats.active_assignments }}</strong><span>Active Assignments</span></div>
+    <div class="stat-box"><strong>{{ stats.completed_problems }}</strong><span>Completed</span></div>
+    <div class="stat-box"><strong>{{ stats.successes }}</strong><span>Success Rate</span></div>
+  </div>
+
+  <div class="card-grid two">
+    <article class="panel-card">
+      <h3>Platform health</h3>
+      <div class="mini-problem"><div><strong>Student engagement</strong><small>Last 7 days</small></div><span>92%</span></div>
+      <div class="mini-problem"><div><strong>Company response rate</strong><small>Within 48h</small></div><span>86%</span></div>
+      <div class="mini-problem"><div><strong>Problem completion rate</strong><small>Across platform</small></div><span>78%</span></div>
+    </article>
+    <article class="panel-card">
+      <h3>Moderation queue</h3>
+      <div class="mini-problem"><div><strong>Review flagged submissions</strong><small>4 items</small></div><span>Action needed</span></div>
+      <div class="mini-problem"><div><strong>Report payouts</strong><small>2 pending</small></div><span>Review</span></div>
+      <div class="mini-problem"><div><strong>Verify new companies</strong><small>6 accounts</small></div><span>Queued</span></div>
+    </article>
+  </div>
+</section>
+{% endblock %}

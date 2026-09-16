@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Smart Pre-Order Canteen{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <p class="eyebrow">SMART PRE-ORDER</p>
+      <h1>CANTEEN SYSTEM</h1>
+      <p class="subtitle">Skip the Queue. Order Ahead.</p>
+      <div class="hero-actions">
+        <a href="/student/menu" class="btn btn-primary">Order Now</a>
+        <a href="/login" class="btn btn-secondary">Login</a>
+        <a href="/register" class="btn btn-secondary">Register</a>
+      </div>
+    </div>
+    <div class="hero-box">
+      <h3>Today’s kitchen</h3>
+      <ul>
+        <li>Dosa - ₹30</li>
+        <li>Idly - ₹25</li>
+        <li>Biryani - ₹100</li>
+        <li>Meals - ₹80</li>
+        <li>Tea - ₹15</li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}

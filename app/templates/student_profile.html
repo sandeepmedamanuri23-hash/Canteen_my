@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Student Profile | Reverse Internship{% endblock %}
+{% block content %}
+<section class="container dashboard">
+  <div class="dashboard-header">
+    <div>
+      <p class="eyebrow">Student profile</p>
+      <h1>{{ student.name if student else 'Student' }}</h1>
+    </div>
+    <a href="/student/dashboard" class="btn secondary">BACK TO DASHBOARD</a>
+  </div>
+
+  <div class="card-grid two">
+    <article class="panel-card">
+      <h3>Profile details</h3>
+      <p><strong>College:</strong> {{ student.college or 'Not specified' }}</p>
+      <p><strong>Degree:</strong> {{ student.degree or 'Not specified' }}</p>
+      <p><strong>Branch:</strong> {{ student.branch or 'Not specified' }}</p>
+      <p><strong>Experience:</strong> {{ student.experience_level or 'Beginner' }}</p>
+      <p><strong>Skills:</strong> {{ student.skills or 'No skills added yet' }}</p>
+      <p><strong>Technologies:</strong> {{ student.technologies or 'No technologies listed' }}</p>
+      <p><strong>Bio:</strong> {{ student.bio or 'No bio provided yet.' }}</p>
+    </article>
+
+    <article class="panel-card">
+      <h3>Links</h3>
+      <p><strong>GitHub:</strong> {{ student.github or 'Not available' }}</p>
+      <p><strong>LinkedIn:</strong> {{ student.linkedin or 'Not available' }}</p>
+      <p><strong>Portfolio:</strong> {{ student.portfolio or 'Not available' }}</p>
+      <p><strong>Availability:</strong> Open to internship opportunities</p>
+      <a href="/student/portfolio/{{ student.id }}" class="btn primary">VIEW PORTFOLIO</a>
+    </article>
+  </div>
+
+  <article class="panel-card" style="margin-top: 1.5rem;">
+    <h3>Edit profile</h3>
+    <form method="post" action="/student/profile/edit">
+      <div class="form-grid two">
+        <div><label>Name</label><input type="text" name="name" value="{{ student.name if student else '' }}" /></div>
+        <div><label>College</label><input type="text" name="college" value="{{ student.college or '' }}" /></div>
+        <div><label>Degree</label><input type="text" name="degree" value="{{ student.degree or '' }}" /></div>
+        <div><label>Branch</label><input type="text" name="branch" value="{{ student.branch or '' }}" /></div>
+        <div><label>Skills</label><input type="text" name="skills" value="{{ student.skills or '' }}" /></div>
+        <div><label>Technologies</label><input type="text" name="technologies" value="{{ student.technologies or '' }}" /></div>
+        <div><label>Experience level</label><input type="text" name="experience_level" value="{{ student.experience_level or 'Beginner' }}" /></div>
+        <div><label>Portfolio</label><input type="text" name="portfolio" value="{{ student.portfolio or '' }}" /></div>
+        <div><label>GitHub</label><input type="text" name="github" value="{{ student.github or '' }}" /></div>
+        <div><label>LinkedIn</label><input type="text" name="linkedin" value="{{ student.linkedin or '' }}" /></div>
+        <div class="full-width"><label>Bio</label><textarea name="bio">{{ student.bio or '' }}</textarea></div>
+      </div>
+      <button type="submit" class="btn primary">SAVE PROFILE</button>
+    </form>
+  </article>
+</section>
+{% endblock %}

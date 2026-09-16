@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Problems | Reverse Internship{% endblock %}
+{% block content %}
+<section class="container page-section">
+  <div class="section-head">
+    <p class="eyebrow">Problem marketplace</p>
+    <h1>Discover company challenges</h1>
+  </div>
+  <div class="filters-box">
+    <input type="text" placeholder="Search problems..." />
+    <select><option>Technology</option></select>
+    <select><option>Category</option></select>
+    <select><option>Difficulty</option></select>
+    <select><option>Paid / Unpaid</option></select>
+  </div>
+  <div class="card-grid three">
+    {% for problem in problems %}
+    <article class="problem-card">
+      <div class="problem-topline"><span>{{ problem.category }}</span><span class="badge paid">{{ problem.payment_status }}</span></div>
+      <h3>{{ problem.title }}</h3>
+      <p>{{ problem.description[:180] }}...</p>
+      <div class="meta-row">
+        <span>{{ problem.technologies }}</span>
+        <span>{{ problem.difficulty }}</span>
+      </div>
+      <div class="meta-row">
+        <span>{{ problem.duration }}</span>
+        <span>Deadline {{ problem.deadline }}</span>
+      </div>
+      <div class="problem-actions">
+        <a href="/problems/{{ problem.id }}" class="btn secondary small">View Details</a>
+        <a href="/problems/{{ problem.id }}" class="btn primary small">Apply</a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

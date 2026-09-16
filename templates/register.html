@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Register | Smart Canteen{% endblock %}
+{% block content %}
+<section class="auth-section">
+  <div class="auth-card">
+    <h2>Create account</h2>
+    <form method="post">
+      <div>
+        <label>Name</label>
+        <input type="text" name="name" required />
+      </div>
+      <div>
+        <label>Email</label>
+        <input type="email" name="email" required />
+      </div>
+      <div>
+        <label>Phone</label>
+        <input type="tel" name="phone" placeholder="+919642703351" pattern="\+[1-9][0-9]{7,14}" required />
+        <p class="muted-text">Use international format, for example +919642703351.</p>
+      </div>
+      <div>
+        <label>Password</label>
+        <input type="password" name="password" required />
+      </div>
+      <div>
+        <label>Confirm Password</label>
+        <input type="password" name="confirm_password" required />
+      </div>
+      <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+    <p class="auth-link">Already have an account? <a href="/login">Login</a></p>
+  </div>
+</section>
+{% endblock %}

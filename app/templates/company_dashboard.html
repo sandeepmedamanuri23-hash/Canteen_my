@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Company Dashboard | Reverse Internship{% endblock %}
+{% block content %}
+<section class="container dashboard">
+  <div class="dashboard-header">
+    <div>
+      <p class="eyebrow">Company dashboard</p>
+      <h1>Welcome back, {{ company.company_name if company else 'Company' }}</h1>
+    </div>
+    <a href="/problems/create" class="btn primary">POST A NEW PROBLEM</a>
+  </div>
+
+  <div class="stats-grid dashboard-stats">
+    <div class="stat-box"><strong>{{ stats.problems_posted }}</strong><span>Problems Posted</span></div>
+    <div class="stat-box"><strong>{{ stats.applications }}</strong><span>Applications</span></div>
+    <div class="stat-box"><strong>{{ stats.active_assignments }}</strong><span>Active Assignments</span></div>
+    <div class="stat-box"><strong>{{ stats.completed_problems }}</strong><span>Completed Problems</span></div>
+  </div>
+
+  <div class="card-grid two">
+    <article class="panel-card">
+      <h3>Posted Problems</h3>
+      {% for p in problems %}
+      <div class="mini-problem"><div><strong>{{ p.title }}</strong><small>{{ p.category }}</small></div><span>{{ p.status if p.status else 'Open' }}</span></div>
+      {% endfor %}
+    </article>
+    <article class="panel-card">
+      <h3>Open Applications</h3>
+      <div class="mini-problem"><div><strong>Bug fix candidate</strong><small>Application received</small></div><span>New</span></div>
+    </article>
+  </div>
+</section>
+{% endblock %}

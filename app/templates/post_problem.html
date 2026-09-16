@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Post a Problem | Reverse Internship{% endblock %}
+{% block content %}
+<section class="auth-section">
+  <div class="auth-card wide">
+    <h2>Post a real problem</h2>
+    <p>Share the challenge your company needs solved.</p>
+    <form method="post" action="/problems/create">
+      <div class="form-grid two">
+        <div class="full-width"><label>Problem Title</label><input type="text" name="title" required /></div>
+        <div class="full-width"><label>Problem Description</label><textarea name="description" required></textarea></div>
+        <div><label>Category</label><select name="category"><option>Web Development</option><option>Mobile Development</option><option>AI/ML</option><option>Data Science</option><option>Cybersecurity</option><option>Cloud Computing</option><option>Software Development</option><option>UI/UX</option><option>Testing</option><option>Bug Fixing</option><option>Research</option><option>Feature Development</option><option>Unfinished Projects</option><option>Documentation</option></select></div>
+        <div><label>Required Skills</label><input type="text" name="required_skills" /></div>
+        <div><label>Technologies</label><input type="text" name="technologies" /></div>
+        <div><label>Difficulty</label><select name="difficulty"><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></div>
+        <div><label>Expected Duration</label><input type="text" name="duration" /></div>
+        <div><label>Deadline</label><input type="date" name="deadline" /></div>
+        <div><label>Payment Status</label><select name="payment_status"><option>Unpaid</option><option>Paid</option></select></div>
+        <div><label>Payment Amount</label><input type="number" name="payment_amount" value="0" /></div>
+        <div><label>Number of Students</label><input type="number" name="number_of_students" value="1" /></div>
+        <div><label>Remote / On-site</label><select name="remote_option"><option>Remote</option><option>On-site</option><option>Hybrid</option></select></div>
+        <div class="full-width"><label>Requirements</label><textarea name="requirements"></textarea></div>
+        <div class="full-width"><label>Expected Deliverables</label><textarea name="deliverables"></textarea></div>
+        <div class="full-width"><label>GitHub Repository</label><input type="url" name="github_repository" /></div>
+        <div class="full-width"><label>Additional Instructions</label><textarea name="instructions"></textarea></div>
+      </div>
+      <button type="submit" class="btn primary full">Post Problem</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

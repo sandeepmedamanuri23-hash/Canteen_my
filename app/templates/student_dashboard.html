@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard | Reverse Internship{% endblock %}
+{% block content %}
+<section class="container dashboard">
+  <div class="dashboard-header">
+    <div>
+      <p class="eyebrow">Student dashboard</p>
+      <h1>Welcome back, {{ student.name if student else 'Student' }}</h1>
+    </div>
+    <a href="/problems" class="btn primary">FIND PROBLEMS TO SOLVE</a>
+  </div>
+
+  <div class="stats-grid dashboard-stats">
+    <div class="stat-box"><strong>{{ stats.problems_solved }}</strong><span>Problems Solved</span></div>
+    <div class="stat-box"><strong>{{ stats.active_projects }}</strong><span>Active Projects</span></div>
+    <div class="stat-box"><strong>{{ stats.applications }}</strong><span>Applications</span></div>
+    <div class="stat-box"><strong>{{ stats.completed_projects }}</strong><span>Completed Projects</span></div>
+    <div class="stat-box"><strong>{{ stats.average_rating }}</strong><span>Average Rating</span></div>
+  </div>
+
+  <div class="card-grid two">
+    <article class="panel-card">
+      <h3>Recommended Problems</h3>
+      {% for p in problems %}
+      <div class="mini-problem"><div><strong>{{ p.title }}</strong><small>{{ p.category }}</small></div><span>{{ p.difficulty }}</span></div>
+      {% endfor %}
+    </article>
+    <article class="panel-card">
+      <h3>Active Assignments</h3>
+      <div class="mini-problem"><div><strong>Authentication Bug Fix</strong><small>In Progress</small></div><span>Due in 5 days</span></div>
+    </article>
+  </div>
+
+  <div class="card-grid two">
+    <article class="panel-card">
+      <h3>Applications</h3>
+      <div class="mini-problem"><div><strong>AI Research Helper</strong><small>Under review</small></div><span>Pending</span></div>
+    </article>
+    <article class="panel-card">
+      <h3>Notifications</h3>
+      <div class="mini-problem"><div><strong>New application accepted</strong><small>Company update</small></div><span>Now</span></div>
+    </article>
+  </div>
+</section>
+{% endblock %}

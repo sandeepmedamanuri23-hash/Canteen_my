@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Admin Payments{% endblock %}
+{% block content %}
+<section class="container page-head">
+  <h1>Payments</h1>
+  <div class="toolbar">
+    <a href="/admin/payments?status=all" class="btn btn-secondary">All</a>
+    <a href="/admin/payments?status=paid" class="btn btn-secondary">Paid</a>
+    <a href="/admin/payments?status=pending_verification" class="btn btn-secondary">Pending Verification</a>
+    <a href="/admin/payments?status=cash_pending" class="btn btn-secondary">Cash Pending</a>
+    <a href="/admin/payments?status=failed" class="btn btn-secondary">Failed</a>
+  </div>
+
+  <div class="table-wrap">
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Amount</th>
+          <th>Method</th>
+          <th>Transaction</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for payment in payments %}
+        <tr>
+          <td>{{ payment.order_id }}</td>
+          <td>{{ payment.customer_name }}</td>
+          <td>₹{{ payment.amount }}</td>
+          <td>{{ payment.payment_method or 'UPI' }}</td>
+          <td>{{ payment.transaction_id or payment.gateway_payment_id or 'N/A' }}</td>
+          <td><span class="status-badge status-{{ payment.status|lower|replace(' ', '-')|replace('/', '-') }}">{{ payment.status }}</span></td>
+          <td><a href="/admin/order/{{ payment.order_id }}" class="btn btn-secondary">View Details</a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7">No payment records found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
