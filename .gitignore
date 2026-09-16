@@ -12,3 +12,6 @@ __pycache__/
 
 instance/
 *.db
+# Local backup files
+*_backup.py
+*_backup.txt

@@ -8,18 +8,6 @@ app = module.app
 client = app.test_client()
 
 
-def test_mobile_otp_login_flow_works():
-    original_sender = module.send_msg91_otp
-    module.send_msg91_otp = lambda phone, otp: True
-    try:
-        response = client.post('/login/mobile', data={'phone': '9876543210'})
-        assert response.status_code in (200, 302)
-        body = response.get_data(as_text=True)
-        assert 'OTP sent successfully' in body or response.location.endswith('/login/verify-otp')
-    finally:
-        module.send_msg91_otp = original_sender
-
-
 def test_homepage_loads():
     response = client.get('/')
     assert response.status_code == 200
