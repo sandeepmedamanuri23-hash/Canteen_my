@@ -3,10 +3,10 @@
 {% block content %}
 <section class="auth-section">
   <div class="auth-card">
-    <h2>Verify Mobile Number</h2>
-    <p class="muted-text">Enter the 6-digit OTP sent to {{ phone }}</p>
+    <h2>{% if registration %}Verify Email{% else %}Verify Mobile Number{% endif %}</h2>
+    <p class="muted-text">Enter the 6-digit OTP sent to {% if registration %}your email address{% else %}{{ phone }}{% endif %}</p>
 
-    <form method="post" action="{{ url_for('verify_mobile_login') }}">
+    <form method="post" action="{{ url_for('verify_registration' if registration else 'verify_mobile_login') }}">
       <div>
         <label for="otp">OTP</label>
         <input id="otp" type="text" name="otp" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" required />
@@ -14,13 +14,15 @@
       <button type="submit" class="btn btn-primary">Verify OTP</button>
     </form>
 
-    <form method="post" action="{{ url_for('resend_mobile_otp') }}" class="inline-form">
+    <form method="post" action="{{ url_for('resend_registration_otp' if registration else 'resend_mobile_otp') }}" class="inline-form">
       <button type="submit" class="btn btn-secondary">Resend OTP</button>
     </form>
 
-    <p class="auth-link">
-      <a href="{{ url_for('login_mobile') }}">Change mobile number</a>
-    </p>
+    {% if not registration %}
+      <p class="auth-link"><a href="{{ url_for('login_mobile') }}">Change mobile number</a></p>
+    {% else %}
+      <p class="auth-link"><a href="{{ url_for('register') }}">Start registration again</a></p>
+    {% endif %}
   </div>
 </section>
 {% endblock %}

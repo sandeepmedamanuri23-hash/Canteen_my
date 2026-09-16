@@ -142,14 +142,19 @@ def init_db():
             name TEXT NOT NULL,
             email TEXT NOT NULL,
             password_hash TEXT NOT NULL,
-            phone TEXT NOT NULL,
+            phone TEXT,
             otp_hash TEXT NOT NULL,
             expires_at TEXT NOT NULL,
             attempts INTEGER NOT NULL DEFAULT 0,
+            last_sent_at TEXT,
             created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         )
         """
     )
+
+    ensure_columns(conn, 'registration_otps', {
+        'last_sent_at': 'TEXT',
+    })
 
     conn.execute(
         """
@@ -315,12 +320,12 @@ def create_verified_user(name, email, password_hash, phone, role="student"):
     return user_id
 
 
-def create_registration_otp(name, email, password_hash, phone, otp_hash, expires_at):
+def create_registration_otp(name, email, password_hash, otp_hash, expires_at, last_sent_at=None):
     conn = get_connection()
-    conn.execute("DELETE FROM registration_otps WHERE email = ? OR phone = ?", (email, phone))
+    conn.execute("DELETE FROM registration_otps WHERE email = ?", (email,))
     cursor = conn.execute(
-        "INSERT INTO registration_otps (name, email, password_hash, phone, otp_hash, expires_at) VALUES (?, ?, ?, ?, ?, ?)",
-        (name, email, password_hash, phone, otp_hash, expires_at),
+        "INSERT INTO registration_otps (name, email, password_hash, phone, otp_hash, expires_at, last_sent_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        (name, email, password_hash, '', otp_hash, expires_at, last_sent_at),
     )
     conn.commit()
     verification_id = cursor.lastrowid

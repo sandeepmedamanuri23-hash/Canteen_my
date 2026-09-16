@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 
 import requests
 from dotenv import load_dotenv
+from email_validator import EmailNotValidError, validate_email
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 try:
     import razorpay
@@ -32,12 +33,7 @@ from database import (
     get_orders_for_user,
     get_latest_payment,
     get_latest_payment_by_gateway_order,
-    create_registration_otp,
-    create_verified_user,
-    delete_registration_otp,
-    get_registration_otp,
     increment_mobile_otp_attempts,
-    increment_registration_otp_attempts,
     get_user_by_email,
     get_user_by_id,
     get_user_by_phone,
@@ -77,9 +73,6 @@ app.config["MSG91_COUNTRY"] = os.getenv("MSG91_COUNTRY", "91")
 app.config["MSG91_RESEND_COOLDOWN_SECONDS"] = int(os.getenv("MSG91_RESEND_COOLDOWN_SECONDS", "30"))
 app.config["MSG91_MAX_ATTEMPTS"] = int(os.getenv("MSG91_MAX_ATTEMPTS", "5"))
 app.config["MSG91_OTP_EXPIRY_SECONDS"] = int(os.getenv("MSG91_OTP_EXPIRY_SECONDS", os.getenv("OTP_EXPIRY_SECONDS", "300")))
-app.config["TWILIO_ACCOUNT_SID"] = os.getenv("TWILIO_ACCOUNT_SID", "")
-app.config["TWILIO_AUTH_TOKEN"] = os.getenv("TWILIO_AUTH_TOKEN", "")
-app.config["TWILIO_FROM_NUMBER"] = os.getenv("TWILIO_FROM_NUMBER", "")
 
 init_db()
 
@@ -157,36 +150,22 @@ def send_msg91_otp(phone, otp):
         return False
 
 
-def send_registration_otp(phone, otp):
-    if not all((app.config["TWILIO_ACCOUNT_SID"], app.config["TWILIO_AUTH_TOKEN"], app.config["TWILIO_FROM_NUMBER"])):
-        return False
-    try:
-        from twilio.rest import Client
-        Client(app.config["TWILIO_ACCOUNT_SID"], app.config["TWILIO_AUTH_TOKEN"]).messages.create(
-            body=f"Your Smart Pre-Order Canteen verification code is {otp}. It expires in 5 minutes.",
-            from_=app.config["TWILIO_FROM_NUMBER"],
-            to=phone,
-        )
-        return True
-    except Exception:
-        return False
-
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         name = request.form.get('name', '').strip()
         email = request.form.get('email', '').strip()
-        phone = request.form.get('phone', '').strip()
+        email = request.form.get('email', '').strip().lower()
         password = request.form.get('password', '')
         confirm = request.form.get('confirm_password', '')
 
-        phone = normalize_phone(phone)
-        if not all([name, email, password, phone]):
-            flash('Name, email, password, and a phone number in international format are required.')
+        if not all([name, email, password]):
+            flash('Name, email, and password are required.')
             return render_template('register.html')
-        if not re.fullmatch(r"\d{6,}", phone.replace('+', '').replace(' ', '')):
-            flash('Please fill in all required fields.')
+        try:
+            email = validate_email(email, check_deliverability=False).normalized
+        except EmailNotValidError:
+            flash('Enter a valid email address.')
             return render_template('register.html')
         if password != confirm:
             flash('Passwords do not match.')
@@ -195,57 +174,14 @@ def register():
             flash('This email is already registered.')
             return render_template('register.html')
 
-        otp = f"{secrets.randbelow(1000000):06d}"
-        expires_at = (datetime.utcnow() + timedelta(seconds=app.config["OTP_EXPIRY_SECONDS"])).isoformat()
-        verification_id = create_registration_otp(name, email, hash_password(password), phone, hash_password(otp), expires_at)
-        if not send_registration_otp(phone, otp):
-            delete_registration_otp(verification_id)
-            flash('Phone OTP service is not configured or unavailable. Contact the administrator.')
+        user_id = create_user(name, email, password, None, role='student')
+        if not user_id:
+            flash('This email is already registered.')
             return render_template('register.html')
-        session['registration_verification_id'] = verification_id
-        flash('A verification code was sent to your phone.')
-        return redirect(url_for('verify_registration'))
+        flash('Registration successful. Please log in.')
+        return redirect(url_for('login'))
 
     return render_template('register.html')
-
-
-@app.route('/register/verify', methods=['GET', 'POST'])
-def verify_registration():
-    verification_id = session.get('registration_verification_id')
-    record = get_registration_otp(verification_id) if verification_id else None
-    if not record:
-        flash('Start registration again to request a new verification code.')
-        return redirect(url_for('register'))
-    if request.method == 'POST':
-        if record['attempts'] >= app.config["OTP_MAX_ATTEMPTS"]:
-            delete_registration_otp(verification_id)
-            session.pop('registration_verification_id', None)
-            flash('Too many incorrect attempts. Start registration again.')
-            return redirect(url_for('register'))
-        increment_registration_otp_attempts(verification_id)
-        try:
-            expired = datetime.utcnow() >= datetime.fromisoformat(record['expires_at'])
-        except ValueError:
-            expired = True
-        if expired:
-            delete_registration_otp(verification_id)
-            session.pop('registration_verification_id', None)
-            flash('That verification code has expired. Start registration again.')
-            return redirect(url_for('register'))
-        if not verify_password(request.form.get('otp', '').strip(), record['otp_hash']):
-            flash('Invalid verification code.')
-            return render_template('otp_verify.html')
-        if get_user_by_email(record['email']):
-            delete_registration_otp(verification_id)
-            session.pop('registration_verification_id', None)
-            flash('This email is already registered.')
-            return redirect(url_for('login'))
-        create_verified_user(record['name'], record['email'], record['password_hash'], record['phone'], role='student')
-        delete_registration_otp(verification_id)
-        session.pop('registration_verification_id', None)
-        flash('Phone verified. Registration successful. Please log in.')
-        return redirect(url_for('login'))
-    return render_template('otp_verify.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
