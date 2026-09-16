@@ -2,12 +2,13 @@
 .env.local
 .env.*
 !.env.example
+
 .venv/
 .venv-1/
+
 __pycache__/
 *.pyc
-instance/*.db
 .pytest_cache/
 
-canteen.db
-reverse_internship.db
+instance/
+*.db
